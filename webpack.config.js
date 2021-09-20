@@ -1,8 +1,8 @@
 module.exports = {
+    mode:'development',
     // 1
     entry: {
-        app: ['./src/index.js',
-            './src/js/index.js',
+        app: ['./src/js/index.js',
             './src/js/game.js',
             './src/js/style.js'
         ]

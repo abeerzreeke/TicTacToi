@@ -15,12 +15,13 @@ var playWithPc = false
 var cellPlayer = []
 var cellPc = []
 var pcPlay = true
+var clickOnHeader = true
 
 const numLevel = () => `Level   ${parseInt(level + 1)}/5`;
-titleContainer.innerHTML = `Welcome <br> Please Choose With Who You Want To Play` 
+titleContainer.innerHTML = `Welcome <br> Please Choose With Who You Want To Play`
 
 const winningConditions = [
-    
+
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -38,24 +39,34 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 }
 
 function handleCellPlayedWithPC(clickedCell, clickedCellIndex) {
-    gameState[clickedCellIndex] = 'X';
-    clickedCell.innerHTML = 'X';
+    
+    if(cellPlayer.length == 1){
+        gameState[clickedCellIndex] = 'X';
+        clickedCell.innerHTML = 'X';
+    }
+    else{
+        if(cellPlayer.length == cellPc.length + 1){
+            gameState[clickedCellIndex] = 'X';
+            clickedCell.innerHTML = 'X';
+        }
+    }
+   
 }
-
 
 function handlePlayerChange() {
     currentPlayer = currentPlayer === "X" ? "O" : "X";
 }
+
 function reStart() {
+
     for (let i = 0; i < 9; i++) {
         var cellCu = gameContainer.children[i]
-        if(playWithPc){
+        if (playWithPc) {
             cellCu.removeEventListener('click', handleCellClick)
             cellCu.addEventListener('click', handleCellClickPc)
         }
-        
-        
     }
+
     gameActive = true;
     currentPlayer = "X";
     gameState = ["", "", "", "", "", "", "", "", ""];
@@ -68,11 +79,15 @@ function reStart() {
 }
 
 function showWin() {
+
     gameActive = false
+    clickOnHeader = false
     level = 0
+    pcPlay = false
+
     if (pointX > pointO) {
         titleContainer.innerHTML = `Player X has won! <br> ${pointX} - ${pointO}`
-        
+
     }
     else if (pointO > pointX) {
         titleContainer.innerHTML = `Player O has won! <br> ${pointO} - ${pointX}`
@@ -88,10 +103,12 @@ function handleResultValidation() {
 
     let roundWon = false;
     for (let i = 0; i <= 7; i++) {
+
         const winCondition = winningConditions[i];
         let a = gameState[winCondition[0]];
         let b = gameState[winCondition[1]];
         let c = gameState[winCondition[2]];
+
         if (a === '' || b === '' || c === '') {
             continue;
         }
@@ -100,7 +117,7 @@ function handleResultValidation() {
             break
         }
     }
-    console.log(level)
+
     if (roundWon) {
         level += 1
         if (level == 5) {
@@ -151,7 +168,10 @@ function handleResultValidation() {
         }, 1500);
         return;
     }
-    handlePlayerChange();
+    if(!playWithPc){
+        handlePlayerChange();
+    }
+    
 }
 
 function generateRandom(min, max) {
@@ -159,17 +179,19 @@ function generateRandom(min, max) {
     return (cellPlayer.includes(num) || cellPc.includes(num)) ? generateRandom(min, max) : num;
 }
 
-function handleCellPC(){
-
-    var random = generateRandom(0, 8)    
+function handleCellPC() {
+    currentPlayer = 'O'
+    var random = generateRandom(0, 8)
     cellPc.push(random)
     var cellPC = document.getElementsByClassName('cell')[random]
     gameState[random] = 'O'
+
     setTimeout(() => {
         cellPC.innerHTML = 'O';
     }, 500);
-    console.log(gameState)
+
     handleResultValidation();
+
     for (let i = 0; i < 9; i++) {
         var cellCu = gameContainer.children[i]
         cellCu.addEventListener('click', handleCellClickPc)
@@ -180,12 +202,8 @@ function handleCellClickPc(clickedCellEvent) {
 
     const clickedCell = clickedCellEvent.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
-    cellPlayer.push(clickedCellIndex)
-
-    for (let i = 0; i < 9; i++) {
-        var cellCu = gameContainer.children[i]
-        cellCu.removeEventListener('click', handleCellClickPc)
-        
+    if(!(cellPlayer.includes(clickedCellIndex)) && !(cellPc.includes(clickedCellIndex)) ){
+        cellPlayer.push(clickedCellIndex)
     }
 
     if (gameState[clickedCellIndex] !== "" || !gameActive) {
@@ -193,14 +211,17 @@ function handleCellClickPc(clickedCellEvent) {
     }
 
     handleCellPlayedWithPC(clickedCell, clickedCellIndex);
+    currentPlayer = 'X'
     handleResultValidation();
-    if(pcPlay){
+
+    if (pcPlay) {
         handleCellPC()
     }
-    
+
 }
 
 function handleCellClick(clickedCellEvent) {
+
     const clickedCell = clickedCellEvent.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
 
@@ -210,32 +231,6 @@ function handleCellClick(clickedCellEvent) {
     handleCellPlayed(clickedCell, clickedCellIndex);
     handleResultValidation();
 }
-
-gameRestart.onclick = function handleRestartGame() {
-    gameActive = true;
-    pointX = 0
-    pointO = 0
-    profileX.innerHTML = 0
-    profileO.innerHTML = 0
-    currentPlayer = "X";
-    gameState = ["", "", "", "", "", "", "", "", ""];
-    statusDisplay.innerHTML = ''
-    titleContainer.innerHTML = ''
-    titleContainer.innerHTML = `Welcome <br> Please Choose With Who You Want To Play` 
-    sec.children[0].removeChild(gameRestart)
-    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
-}
-
-
-function emptyContuner(){
-    titleContainer.innerHTML = numLevel();
-    pcPlay = true
-    cellPc = []
-    cellPlayer = []
-    gameState = ["", "", "", "", "", "", "", "", ""];
-    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
-}
-
 
 function chooseUserOrPc(cureentChoose) {
 
@@ -247,10 +242,11 @@ function chooseUserOrPc(cureentChoose) {
             var cellCu = gameContainer.children[i]
             cellCu.removeEventListener('click', handleCellClick)
             cellCu.addEventListener('click', handleCellClickPc)
-            
         }
+
         return false
     }
+
     else if ((cureentChoose.getAttribute('class')) == 'frind-icon') {
         rivalIcon.innerHTML = ' <i class="fas fa-user-friends"></i>'
         emptyContuner()
@@ -264,7 +260,18 @@ function chooseUserOrPc(cureentChoose) {
     }
 }
 
-function start(){
+function emptyContuner() {
+
+    titleContainer.innerHTML = numLevel();
+    pcPlay = true
+    cellPc = []
+    cellPlayer = []
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+}
+
+
+function start() {
     cellPc = []
     cellPlayer = []
     level = 0
@@ -277,25 +284,58 @@ function start(){
     document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
 }
 
-desk.onclick = function chooseWhith(e) {
-    start()
-    chooseUserOrPc(e.target)
+desk.onclick = function chooseWith(e) {
+    if (clickOnHeader) {
+        start()
+        chooseUserOrPc(e.target)
+    }
 }
 
-friend.onclick = function chooseWhith(e) {
-    start()
-    chooseUserOrPc(e.target)
+friend.onclick = function chooseWith(e) {
+    if (clickOnHeader) {
+        start()
+        chooseUserOrPc(e.target)
+    }
 }
 
 resetCurrentProfileRival.onclick = function resetPoint() {
-    start()
-    titleContainer.innerHTML = numLevel()
-   
+    if (clickOnHeader) {
+        start()
+        titleContainer.innerHTML = numLevel()
+    }
 }
 
 resetCurrentProfile.onclick = function resetPoint() {
-    start()
-    titleContainer.innerHTML = numLevel()
-   
+    if (clickOnHeader) {
+        start()
+        titleContainer.innerHTML = numLevel()
+    }
 }
 
+gameRestart.onclick = function handleRestartGame() {
+
+
+    if(playWithPc){
+        pcPlay = true
+        for (let i = 0; i < 9; i++) {
+            var cellCu = gameContainer.children[i]
+            cellCu.addEventListener('click', handleCellClickPc)
+
+        }
+    }
+    cellPc = []
+    cellPlayer = []
+    clickOnHeader = true
+    gameActive = true;
+    pointX = 0
+    pointO = 0
+    profileX.innerHTML = 0
+    profileO.innerHTML = 0
+    currentPlayer = "X";
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    statusDisplay.innerHTML = ''
+    titleContainer.innerHTML = ''
+    titleContainer.innerHTML = numLevel()
+    sec.children[0].removeChild(gameRestart)
+    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+}
