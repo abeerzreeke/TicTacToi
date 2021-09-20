@@ -1,0 +1,159 @@
+
+
+.fa-circle{
+    color: rgb(231, 143, 28);
+    bottom: 5px;
+    left: 5px;
+    color: rgb(231, 143, 28);
+    bottom: 5px;
+    margin-right: 80%;
+    margin-top: 8%;
+    font-size: 30px;
+
+}
+
+
+.header {
+    position: relative;
+    height: 195px;
+    width: 100%;
+    text-align: center;
+    background: #00000010;
+    border-radius: 0;
+    margin-top: -3%;
+}
+
+.header .profile {
+    float: left;
+    width: 150px;
+    height: 150px;
+    margin-top: -7%
+}
+
+.header .profile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid;
+    margin-top: -43%;
+    padding: 5px;
+    margin-right: -55%;
+}
+
+.header .profile .profile-points:before,
+.header .rival .profile-points:before  {
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    background: #ffd044;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    content: '';
+    border: 2px solid #FFEB3B;
+}
+
+.header .profile .profile-points,
+.header .rival .profile-points {
+    text-align: center;
+    font-size: 25px;
+    position: relative;
+    background: #ffffff9c;
+    margin: 0px auto;
+    border-radius: 10px;
+    width: 60%;
+    height: 20%;
+    margin-top: 6%;
+
+}
+
+.header .profile .reset-current-profile,
+.header .rival .reset-current-profile {
+    background: white;
+    padding: 7px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    float: right;
+    color: black;
+    margin-right: -13px;
+}
+
+.header .profile .reset-current-profile{
+    margin-top: 28%;
+}
+
+
+
+.header .rival {
+    float: right;
+    width: 150px;
+    height: 150px;
+    margin-top: -7%
+}
+
+.rival-icon{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid;
+    margin-top: -43%;
+    padding: 5px;
+    font-size: 30px;
+    font-family:"Permanent Marker", cursive;
+    color: #d51212;
+}
+
+.header .rival .reset-current-profile{
+    color: #d51212 !important;
+    margin-right: 30px;
+    margin-top: 4%;
+}
+
+.header .rival .profile-points{
+   margin-left: -13px;
+  
+}
+
+.header .rival .fa-desktop,
+.header .rival .fa-user-friends {
+        width: 100px;
+        height: 100px;
+        padding: 15px;
+        width: 50px;
+        height: 50px;
+        color:  #d51212;;
+        font-size: 40px;
+        border-radius: 10px;
+        padding: 25px;
+}
+
+p{
+    margin-top: -47%;
+    font-size: 35px;
+    font-family: "Permanent Marker", cursive;
+
+}
+
+.pc-icon{
+    margin-left: 54%;
+    margin-top: -6.5%;
+
+}
+.frind-icon{
+    margin-left: 35%;
+    margin-top: -2.5%;
+
+}
+.pc-icon,.frind-icon{
+    width: 165px;
+    height: 25px;
+    border: 2px solid;
+    border-radius: 18px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.pc-icon:hover,.frind-icon:hover{
+    background-color: rgb(228 195 57);
+}
