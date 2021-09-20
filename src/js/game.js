@@ -100,6 +100,7 @@ function handleResultValidation() {
             break
         }
     }
+    console.log(level)
     if (roundWon) {
         level += 1
         if (level == 5) {
