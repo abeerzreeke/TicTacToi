@@ -11,6 +11,7 @@ let gameActive = true;
 let currentPlayer = "X";
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
+var playWithPc = false
 var cellPlayer = []
 var cellPc = []
 var pcPlay = true
@@ -46,6 +47,15 @@ function handlePlayerChange() {
     currentPlayer = currentPlayer === "X" ? "O" : "X";
 }
 function reStart() {
+    for (let i = 0; i < 9; i++) {
+        var cellCu = gameContainer.children[i]
+        if(playWithPc){
+            cellCu.removeEventListener('click', handleCellClick)
+            cellCu.addEventListener('click', handleCellClickPc)
+        }
+        
+        
+    }
     gameActive = true;
     currentPlayer = "X";
     gameState = ["", "", "", "", "", "", "", "", ""];
@@ -107,11 +117,6 @@ function handleResultValidation() {
             return
         }
         if (currentPlayer == 'X') {
-            for (let i = 0; i < 9; i++) {
-                var cellCu = gameContainer.children[i]
-                cellCu.addEventListener('click', handleCellClickPc)
-                
-            }
             pcPlay = false
             pointX += 1
             profileX.innerHTML = pointX
@@ -121,11 +126,6 @@ function handleResultValidation() {
             }, 1500);
         }
         else {
-            for (let i = 0; i < 9; i++) {
-                var cellCu = gameContainer.children[i]
-                cellCu.addEventListener('click', handleCellClickPc)
-                
-            }
             pcPlay = false
             pointO += 1
             profileO.innerHTML = pointO
@@ -141,7 +141,6 @@ function handleResultValidation() {
         level += 1
 
         if (level == 5) {
-            console.log('hi')
             showWin()
             return
         }
@@ -161,32 +160,26 @@ function generateRandom(min, max) {
 
 function handleCellPC(){
 
-    // var random = Math.floor(Math.random() * (gameState.length-1));
-
-    var random = generateRandom(0, 8)
-    
+    var random = generateRandom(0, 8)    
     cellPc.push(random)
     var cellPC = document.getElementsByClassName('cell')[random]
+    gameState[random] = 'O'
     setTimeout(() => {
         cellPC.innerHTML = 'O';
     }, 500);
-        
-
+    console.log(gameState)
+    handleResultValidation();
     for (let i = 0; i < 9; i++) {
         var cellCu = gameContainer.children[i]
         cellCu.addEventListener('click', handleCellClickPc)
-        
     }
-
 }
-
 
 function handleCellClickPc(clickedCellEvent) {
 
     const clickedCell = clickedCellEvent.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
     cellPlayer.push(clickedCellIndex)
-
 
     for (let i = 0; i < 9; i++) {
         var cellCu = gameContainer.children[i]
@@ -246,6 +239,7 @@ function emptyContuner(){
 function chooseUserOrPc(cureentChoose) {
 
     if ((cureentChoose.getAttribute('class')) == 'pc-icon') {
+        playWithPc = true
         rivalIcon.innerHTML = '<i class="fas fa-desktop"></i>'
         emptyContuner()
         for (let i = 0; i < 9; i++) {
@@ -259,9 +253,10 @@ function chooseUserOrPc(cureentChoose) {
     else if ((cureentChoose.getAttribute('class')) == 'frind-icon') {
         rivalIcon.innerHTML = ' <i class="fas fa-user-friends"></i>'
         emptyContuner()
-
+        playWithPc = false
         for (let i = 0; i < 9; i++) {
             var cellCu = gameContainer.children[i]
+            cellCu.removeEventListener('click', handleCellClickPc)
             cellCu.addEventListener('click', handleCellClick)
         }
         return false
